@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club De Stars - Member Dashboard | Powered by JESZ LTD</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --sidebar-width: 280px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+            color: white;
+            z-index: 1040;
+            transition: all 0.3s;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(30, 58, 138, 0.15);
+        }
+        
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 0.875rem 1.5rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+        
+        .sidebar-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-left-color: white;
+        }
+        
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left-color: white;
+        }
+        
+        .sidebar-menu a i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+        
+        /* Top Navbar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.08);
+            z-index: 1030;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 75px;
+            padding: 2rem;
+            min-height: calc(100vh - 75px);
+            transition: all 0.3s;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            border: 1px solid rgba(30, 58, 138, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(30, 58, 138, 0.15);
+        }
+        
+        .stat-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.08);
+            background: white;
+            border: 1px solid rgba(30, 58, 138, 0.05);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+            border-bottom: 2px solid rgba(30, 58, 138, 0.1);
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0 !important;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border: none;
+            padding: 0.7rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 12px;
+            padding: 0.7rem 1.75rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .member-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .club-member-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .non-club-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .quick-action {
+            text-align: center;
+            padding: 1.75rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+            border: 2px solid rgba(30, 58, 138, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .quick-action:hover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.25);
+            border-color: transparent;
+        }
+        
+        .quick-action i {
+            font-size: 2.2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        
+        .loan-info-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .savings-goal-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 1.75rem;
+        }
+        
+        .alert-warning-custom {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 1.25rem;
+            color: #92400e;
+        }
+        
+        .alert-info-custom {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            padding: 1.25rem;
+            color: #1e40af;
+        }
+        
+        .powered-by {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            z-index: 1000;
+        }
+        
+        .loan-rules-list {
+            background: rgba(30, 58, 138, 0.02);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid rgba(30, 58, 138, 0.1);
+        }
+        
+        .loan-rules-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+        
+        .loan-rules-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .print-button {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .print-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                left: calc(-1 * var(--sidebar-width));
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .top-navbar {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .powered-by {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 8px 12px;
+            }
+        }
+
+        // Update Goal
+        function updateGoal() {
+            const newAmount = document.getElementById('newGoalAmount').value;
+            if (newAmount && newAmount > 0) {
+                alert('✅ Savings goal updated successfully to ₦' + parseInt(newAmount).toLocaleString('en-NG'));
+                bootstrap.Modal.getInstance(document.getElementById('goalModal')).hide();
+            } else {
+                alert('❌ Please enter a valid goal amount');
+            }
+        }
+
+        // Report Generation Functions
+        function generateReport(type) {
+            const reportPreview = document.getElementById('reportPreview');
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            const reportTypeTitle = document.getElementById('reportTypeTitle');
+            
+            reportPreview.style.display = 'block';
+            reportPreview.scrollIntoView({ behavior: 'smooth' });
+            
+            let content = '';
+            
+            switch(type) {
+                case 'savings':
+                    reportTitle.textContent = 'Savings Report';
+                    reportTypeTitle.textContent = 'Savings Report';
+                    content = `
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                    <small class="text-muted d-block mb-1">Total Savings</small>
+                                    <h4 class="mb-0 fw-bold text-success">₦450,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                    <small class="text-muted d-block mb-1">Total ROI</small>
+                                    <h4 class="mb-0 fw-bold" style="color: var(--primary);">₦37,500</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                    <small class="text-muted d-block mb-1">Avg. Monthly</small>
+                                    <h4 class="mb-0 fw-bold text-warning">₦50,000</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Deposit</th>
+                                    <th>ROI</th>
+                                    <th>Cumulative Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>October 2025</td><td>₦50,000</td><td>₦3,750</td><td>₦450,000</td></tr>
+                                <tr><td>September 2025</td><td>₦50,000</td><td>₦3,563</td><td>₦396,250</td></tr>
+                                <tr><td>August 2025</td><td>₦50,000</td><td>₦3,375</td><td>₦342,687</td></tr>
+                                <tr><td>July 2025</td><td>₦50,000</td><td>₦3,188</td><td>₦289,312</td></tr>
+                                <tr><td>June 2025</td><td>₦50,000</td><td>₦3,000</td><td>₦236,124</td></tr>
+                                <tr><td>May 2025</td><td>₦50,000</td><td>₦2,813</td><td>₦183,124</td></tr>
+                                <tr><td>April 2025</td><td>₦50,000</td><td>₦2,625</td><td>₦130,311</td></tr>
+                                <tr><td>March 2025</td><td>₦50,000</td><td>₦2,438</td><td>₦77,686</td></tr>
+                                <tr><td>February 2025</td><td>₦50,000</td><td>₦2,250</td><td>₦25,248</td></tr>
+                                <tr><td>January 2025</td><td>₦50,000</td><td>₦0</td><td>₦50,000</td></tr>
+                                <tr class="table-active">
+                                    <td><strong>TOTAL</strong></td>
+                                    <td><strong>₦500,000</strong></td>
+                                    <td><strong>₦27,002</strong></td>
+                                    <td><strong>₦450,000</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                    
+                case 'loans':
+                    reportTitle.textContent = 'Loan Report';
+                    reportTypeTitle.textContent = 'Loan Report';
+                    content = `
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                    <small class="text-muted d-block mb-1">Total Borrowed</small>
+                                    <h4 class="mb-0 fw-bold text-warning">₦800,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">
+                                    <small class="text-muted d-block mb-1">Outstanding</small>
+                                    <h4 class="mb-0 fw-bold text-danger">₦200,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                    <small class="text-muted d-block mb-1">Paid Back</small>
+                                    <h4 class="mb-0 fw-bold text-success">₦600,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                    <small class="text-muted d-block mb-1">Interest Paid</small>
+                                    <h4 class="mb-0 fw-bold" style="color: var(--primary);">₦35,000</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-3">Loan History</h6>
+                        <table class="table table-bordered">
+                            <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                <tr>
+                                    <th>Loan ID</th>
+                                    <th>Amount</th>
+                                    <th>Interest Rate</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Outstanding</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>L001</td>
+                                    <td>₦500,000</td>
+                                    <td>5% p.a.</td>
+                                    <td>12 months</td>
+                                    <td><span class="badge bg-warning">Active</span></td>
+                                    <td>₦200,000</td>
+                                </tr>
+                                <tr>
+                                    <td>L000</td>
+                                    <td>₦300,000</td>
+                                    <td>5% p.a.</td>
+                                    <td>12 months</td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>₦0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h6 class="fw-bold mb-3 mt-4">Payment Schedule (Active Loan)</h6>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Payment Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Nov 30, 2025</td><td>₦8,750</td><td><span class="badge bg-warning-subtle text-warning">Pending</span></td></tr>
+                                <tr><td>Oct 30, 2025</td><td>₦8,750</td><td><span class="badge bg-success-subtle text-success">Paid</span></td></tr>
+                                <tr><td>Sep 30, 2025</td><td>₦8,750</td><td><span class="badge bg-success-subtle text-success">Paid</span></td></tr>
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                    
+                case 'roi':
+                    reportTitle.textContent = 'ROI Report';
+                    reportTypeTitle.textContent = 'Return on Investment Report';
+                    content = `
+                        <div class="alert-info-custom mb-4">
+                            <h6 class="fw-bold mb-2">ROI Calculation Formula</h6>
+                            <p class="mb-0 small">Monthly ROI = (Your Cumulative Savings / Total Member Savings) × Monthly Interest Pool × 90%</p>
+                        </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                    <small class="text-muted d-block mb-1">Total ROI Earned</small>
+                                    <h4 class="mb-0 fw-bold text-success">₦37,500</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                    <small class="text-muted d-block mb-1">Average Monthly</small>
+                                    <h4 class="mb-0 fw-bold" style="color: var(--primary);">₦3,750</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                    <small class="text-muted d-block mb-1">Your Share</small>
+                                    <h4 class="mb-0 fw-bold text-warning">12.5%</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);">
+                                    <small class="text-muted d-block mb-1">Effective Rate</small>
+                                    <h4 class="mb-0 fw-bold" style="color: #6366f1;">10.83%</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Your Savings</th>
+                                    <th>Total Pool</th>
+                                    <th>Interest Pool</th>
+                                    <th>Your ROI (90%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>October 2025</td><td>₦450,000</td><td>₦3,600,000</td><td>₦30,000</td><td>₦3,750</td></tr>
+                                <tr><td>September 2025</td><td>₦400,000</td><td>₦3,400,000</td><td>₦28,500</td><td>₦3,563</td></tr>
+                                <tr><td>August 2025</td><td>₦350,000</td><td>₦3,200,000</td><td>₦27,000</td><td>₦3,375</td></tr>
+                                <tr><td>July 2025</td><td>₦300,000</td><td>₦3,000,000</td><td>₦25,500</td><td>₦3,188</td></tr>
+                                <tr><td>June 2025</td><td>₦250,000</td><td>₦2,800,000</td><td>₦24,000</td><td>₦3,000</td></tr>
+                                <tr class="table-active">
+                                    <td colspan="4"><strong>TOTAL ROI EARNED</strong></td>
+                                    <td><strong>₦37,500</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                    
+                case 'transactions':
+                    reportTitle.textContent = 'Transaction Report';
+                    reportTypeTitle.textContent = 'All Transactions Report';
+                    content = `
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                    <small class="text-muted d-block mb-1">Total Deposits</small>
+                                    <h4 class="mb-0 fw-bold text-success">₦500,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">
+                                    <small class="text-muted d-block mb-1">Total Withdrawals</small>
+                                    <h4 class="mb-0 fw-bold text-danger">₦75,000</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                    <small class="text-muted d-block mb-1">Net Position</small>
+                                    <h4 class="mb-0 fw-bold" style="color: var(--primary);">₦425,000</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-sm">
+                            <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Oct 20, 2025</td>
+                                    <td><span class="badge bg-success-subtle text-success">Deposit</span></td>
+                                    <td>Monthly Savings</td>
+                                    <td class="text-success">+₦50,000</td>
+                                    <td>₦450,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 15, 2025</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">Payment</span></td>
+                                    <td>Loan Repayment</td>
+                                    <td class="text-warning">-₦8,750</td>
+                                    <td>₦400,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 1, 2025</td>
+                                    <td><span class="badge bg-info-subtle text-info">ROI</span></td>
+                                    <td>Interest Credit</td>
+                                    <td class="text-info">+₦3,750</td>
+                                    <td>₦408,750</td>
+                                </tr>
+                                <tr>
+                                    <td>Sep 28, 2025</td>
+                                    <td><span class="badge bg-danger-subtle text-danger">Withdrawal</span></td>
+                                    <td>Personal Withdrawal</td>
+                                    <td class="text-danger">-₦75,000</td>
+                                    <td>₦405,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Sep 20, 2025</td>
+                                    <td><span class="badge bg-success-subtle text-success">Deposit</span></td>
+                                    <td>Monthly Savings</td>
+                                    <td class="text-success">+₦50,000</td>
+                                    <td>₦480,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+            }
+            
+            reportContent.innerHTML = content;
+        }
+
+        function downloadReport(format) {
+            if (format === 'pdf') {
+                alert('📄 PDF report will be downloaded...\n\nThis feature requires backend implementation.');
+            } else if (format === 'excel') {
+                alert('📊 Excel report will be downloaded...\n\nThis feature requires backend implementation.');
+            }
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        @media print {
+            .sidebar, .top-navbar, .btn, .quick-action, .powered-by {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .card {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-box">J</div>
+                <div>
+                    <h5 class="mb-0 fw-bold">JESZ LTD</h5>
+                    <small class="opacity-75">Club De Stars</small>
+                </div>
+            </div>
+            <div class="member-badge club-member-badge mt-2">
+                <i class="fas fa-star"></i>
+                <span>Club Member</span>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" class="active" onclick="showSection('dashboard', event)">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" onclick="showSection('transactions', event)">
+                <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+            <a href="#" onclick="showSection('savings', event)">
+                <i class="fas fa-piggy-bank"></i> My Savings
+            </a>
+            <a href="#" onclick="showSection('loans', event)">
+                <i class="fas fa-hand-holding-usd"></i> My Loans
+            </a>
+            <a href="#" onclick="showSection('roi', event)">
+                <i class="fas fa-chart-line"></i> ROI Calculator
+            </a>
+            <a href="#" onclick="showSection('profile', event)">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="#" onclick="openModal('depositModal')">
+                <i class="fas fa-plus-circle"></i> Make Deposit
+            </a>
+            <a href="#" onclick="openModal('withdrawModal')">
+                <i class="fas fa-minus-circle"></i> Request Withdrawal
+            </a>
+            <a href="#" onclick="openModal('loanRequestModal')">
+                <i class="fas fa-file-invoice-dollar"></i> Apply for Loan
+            </a>
+            <a href="#" onclick="showSection('referral', event)">
+                <i class="fas fa-users"></i> Referral Program
+            </a>
+            <a href="#" onclick="showSection('reports', event)">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="#">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="mt-3" style="color: rgba(255,255,255,0.6);">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Top Navbar -->
+    <div class="top-navbar">
+        <i class="fas fa-bars d-lg-none me-3" style="cursor: pointer; color: var(--primary); font-size: 1.5rem;" onclick="document.getElementById('sidebar').classList.toggle('active')"></i>
+        <div class="flex-grow-1">
+            <h5 class="mb-0 fw-bold" style="color: var(--primary)">Welcome back, John! 👋</h5>
+            <small class="text-muted">Member ID: CDS-001 | Saturday, November 01, 2025</small>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="position-relative">
+                <button class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">3</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section">
+            <!-- Welcome Card -->
+            <div class="welcome-card position-relative">
+                <div class="row align-items-center position-relative" style="z-index: 1;">
+                    <div class="col-md-8">
+                        <h2 class="mb-3 fw-bold">Great to see you again! 🎉</h2>
+                        <p class="mb-3 opacity-90 fs-5">Track your savings, manage loans, and grow your wealth with Club De Stars</p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <div class="member-badge">
+                                <i class="fas fa-id-card"></i>
+                                <span>CDS-001</span>
+                            </div>
+                            <div class="member-badge">
+                                <i class="fas fa-calendar"></i>
+                                <span>Member Since: Jan 2024</span>
+                            </div>
+                            <div class="member-badge club-member-badge">
+                                <i class="fas fa-star"></i>
+                                <span>5% Loan Interest Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <h5 class="opacity-90">Account Status</h5>
+                        <h3><span class="badge bg-light text-success fs-5 px-4 py-2">Active</span></h3>
+                        <p class="mb-0 mt-2 opacity-75">KYC Verified ✓</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="alert-warning-custom mb-4">
+                <h6 class="fw-bold mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Withdrawal Window</h6>
+                <p class="mb-0">Regular withdrawals are available from <strong>1st - 10th December</strong>. Force withdrawal available with 2.5% charge (50% initial, remaining after 30 days).</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <p class="text-muted mb-1 fw-semibold">Total Savings</p>
+                        <h3 class="mb-2 fw-bold">₦450,000</h3>
+                        <small class="text-success fw-semibold">
+                            <i class="fas fa-arrow-up me-1"></i>₦50,000 this month
+                        </small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <p class="text-muted mb-1 fw-semibold">Active Loans</p>
+                        <h3 class="mb-2 fw-bold">₦200,000</h3>
+                        <small class="text-warning fw-semibold">
+                            <i class="fas fa-clock me-1"></i>Max: ₦1,350,000
+                        </small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white;">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <p class="text-muted mb-1 fw-semibold">Monthly ROI</p>
+                        <h3 class="mb-2 fw-bold">₦3,750</h3>
+                        <small class="text-info fw-semibold">
+                            <i class="fas fa-chart-line me-1"></i>10% Annual Rate
+                        </small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white;">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <p class="text-muted mb-1 fw-semibold">Next Payment</p>
+                        <h3 class="mb-2 fw-bold">₦8,750</h3>
+                        <small style="color: var(--primary);" class="fw-semibold">
+                            <i class="fas fa-calendar me-1"></i>Due Nov 30, 2025
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-bolt me-2" style="color: var(--primary);"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-lg-3 col-md-6 col-6">
+                            <a href="#" class="quick-action" onclick="openModal('depositModal')">
+                                <i class="fas fa-plus-circle" style="color: #10b981;"></i>
+                                <h6 class="mb-0 fw-semibold">Make Deposit</h6>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-6">
+                            <a href="#" class="quick-action" onclick="openModal('withdrawModal')">
+                                <i class="fas fa-minus-circle" style="color: #ef4444;"></i>
+                                <h6 class="mb-0 fw-semibold">Withdraw</h6>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-6">
+                            <a href="#" class="quick-action" onclick="openModal('loanRequestModal')">
+                                <i class="fas fa-file-invoice-dollar" style="color: #f59e0b;"></i>
+                                <h6 class="mb-0 fw-semibold">Apply for Loan</h6>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-6">
+                            <a href="#" class="quick-action" onclick="openModal('paymentModal')">
+                                <i class="fas fa-money-check-alt" style="color: #06b6d4;"></i>
+                                <h6 class="mb-0 fw-semibold">Loan Payment</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Loan Information -->
+                <div class="col-lg-5">
+                    <!-- Active Loan -->
+                    <div class="loan-info-card">
+                        <h5 class="mb-3 fw-bold"><i class="fas fa-file-invoice-dollar me-2"></i>Active Loan Details</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Loan Amount</span>
+                            <strong>₦500,000</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Outstanding Balance</span>
+                            <strong>₦200,000</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Interest Rate (Club Member)</span>
+                            <strong>5% p.a.</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Next Payment</span>
+                            <strong>₦8,750</strong>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Repayment Progress</small>
+                                <small>60% Paid</small>
+                            </div>
+                            <div class="progress" style="height: 12px; background: rgba(255,255,255,0.3);">
+                                <div class="progress-bar" style="width: 60%; background: white;"></div>
+                            </div>
+                        </div>
+                        <div class="alert-warning-custom mb-3" style="background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); color: white;">
+                            <small><i class="fas fa-clock me-2"></i><strong>Due in 3 days!</strong> Late payment penalty: 0.5% per day</small>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-light fw-semibold" onclick="openModal('paymentModal')">
+                                <i class="fas fa-credit-card me-2"></i>Make Payment
+                            </button>
+                            <button class="btn btn-outline-light" onclick="openModal('rolloverModal')">
+                                <i class="fas fa-sync-alt me-2"></i>Request Rollover
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loan Eligibility -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);"><i class="fas fa-info-circle me-2"></i>Loan Eligibility</h6>
+                            <div class="loan-rules-list">
+                                <div class="mb-3">
+                                    <small class="text-muted d-block mb-1">Maximum Loan Amount</small>
+                                    <h5 class="mb-0 fw-bold" style="color: var(--primary);">₦1,350,000</h5>
+                                    <small class="text-muted">(3x your total savings)</small>
+                                </div>
+                                <ul class="small mb-0 ps-3">
+                                    <li class="mb-2">Must save for at least 1 month</li>
+                                    <li class="mb-2">Club Members: 5% interest rate</li>
+                                    <li class="mb-2">Non-Club Members: 10% interest</li>
+                                    <li class="mb-0">Late penalty: 0.5% per extra day</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings & ROI -->
+                <div class="col-lg-7">
+                    <!-- Savings Goal -->
+                    <div class="savings-goal-card mb-4">
+                        <h5 class="mb-3 fw-bold"><i class="fas fa-target me-2"></i>Savings Goal 2025</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-semibold">₦450,000 of ₦600,000</span>
+                            <span class="fw-bold">75%</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 14px; background: rgba(255,255,255,0.3);">
+                            <div class="progress-bar" style="width: 75%; background: white;"></div>
+                        </div>
+                        <p class="mb-0 opacity-90"><i class="fas fa-calendar me-2"></i>Target: December 2025 | Remaining: ₦150,000</p>
+                    </div>
+
+                    <!-- ROI Summary -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-chart-pie me-2"></i>Return on Investment (ROI)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert-info-custom mb-3">
+                                <h6 class="fw-bold mb-2">Monthly ROI Calculation</h6>
+                                <p class="small mb-0">ROI = (Your Cumulative Savings / Total Member Savings) × Monthly Interest Pool × 90%</p>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                        <small class="text-muted d-block mb-1">This Month's ROI</small>
+                                        <h4 class="mb-0 fw-bold" style="color: var(--primary);">₦3,750</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                        <small class="text-muted d-block mb-1">Total ROI Earned</small>
+                                        <h4 class="mb-0 fw-bold text-success">₦37,500</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="small">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Your Share</span>
+                                    <strong>12.5% of total savings</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Interest Pool</span>
+                                    <strong>₦30,000</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Annual Rate</span>
+                                    <strong>10% per annum</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                            <a href="#" onclick="showSection('transactions', event)" class="btn btn-sm btn-outline-primary">View All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item px-3 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle p-2 me-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold">Savings Deposit</h6>
+                                                <small class="text-muted">Oct 20, 2025 at 10:30 AM</small>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <h6 class="mb-0 text-success fw-bold">+₦50,000</h6>
+                                            <span class="badge bg-success-subtle text-success">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item px-3 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle p-2 me-3" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold">Loan Payment</h6>
+                                                <small class="text-muted">Oct 15, 2025 at 2:15 PM</small>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <h6 class="mb-0 text-warning fw-bold">-₦8,750</h6>
+                                            <span class="badge bg-warning-subtle text-warning">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item px-3 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle p-2 me-3" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white;">
+                                                <i class="fas fa-percentage"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold">ROI Credit</h6>
+                                                <small class="text-muted">Oct 1, 2025 at 9:00 AM</small>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <h6 class="mb-0 text-info fw-bold">+₦3,750</h6>
+                                            <span class="badge bg-info-subtle text-info">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loans Section -->
+        <div id="loans" class="content-section" style="display:none;">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-hand-holding-usd me-2"></i>My Loans</h5>
+                            <button class="btn btn-primary btn-sm" onclick="openModal('loanRequestModal')">
+                                <i class="fas fa-plus me-2"></i>Request New Loan
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Loan Rules -->
+                            <div class="alert-info-custom mb-4">
+                                <h6 class="fw-bold mb-3"><i class="fas fa-info-circle me-2"></i>Loan Rules & Conditions</h6>
+                                <ul class="small mb-0 ps-3">
+                                    <li class="mb-2"><strong>Maximum Loan:</strong> 3x your total savings (Current max: ₦1,350,000)</li>
+                                    <li class="mb-2"><strong>Club Members (CDS):</strong> 5% interest rate per annum</li>
+                                    <li class="mb-2"><strong>Non-Club Members (NCDS):</strong> 10% interest rate per annum</li>
+                                    <li class="mb-2"><strong>Qualification:</strong> Must have been saving for at least 1 month</li>
+                                    <li class="mb-2"><strong>Late Payment Penalty:</strong> 0.5% of loan amount per extra day</li>
+                                    <li class="mb-0"><strong>Rollover:</strong> Pay interest + apply before expiration (interest rate increases by 1%)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Active Loan -->
+                            <div class="card mb-3" style="border: 3px solid #f093fb; border-radius: 20px;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">Personal Loan #L001</h5>
+                                            <small class="text-muted">Approved: May 15, 2025 | Expires: Nov 30, 2025</small>
+                                        </div>
+                                        <span class="badge bg-warning text-dark px-3 py-2">Active</span>
+                                    </div>
+                                    
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-3 col-6">
+                                            <small class="text-muted d-block">Loan Amount</small>
+                                            <h6 class="mb-0 fw-bold">₦500,000</h6>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <small class="text-muted d-block">Outstanding</small>
+                                            <h6 class="mb-0 fw-bold text-danger">₦200,000</h6>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <small class="text-muted d-block">Monthly Payment</small>
+                                            <h6 class="mb-0 fw-bold">₦8,750</h6>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <small class="text-muted d-block">Interest Rate</small>
+                                            <h6 class="mb-0 fw-bold">5% p.a.</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert-warning-custom mb-3">
+                                        <small><i class="fas fa-exclamation-triangle me-2"></i><strong>Payment Due in 3 days!</strong> Avoid 0.5% daily penalty</small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <small class="fw-semibold">Repayment Progress</small>
+                                            <small class="fw-bold">60% Paid</small>
+                                        </div>
+                                        <div class="progress" style="height: 12px;">
+                                            <div class="progress-bar bg-success" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary flex-grow-1" onclick="openModal('paymentModal')">
+                                            <i class="fas fa-credit-card me-2"></i>Make Payment
+                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="openModal('rolloverModal')">
+                                            <i class="fas fa-sync-alt me-2"></i>Rollover
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Loan History -->
+                            <h6 class="mb-3 text-muted fw-semibold">Loan History</h6>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Emergency Loan #L000</h6>
+                                            <small class="text-muted">Jan 10, 2024 - Dec 20, 2024</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <h6 class="mb-1 fw-bold">₦300,000</h6>
+                                            <span class="badge bg-success-subtle text-success px-3 py-2">Fully Paid</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h6 class="mb-3 fw-bold" style="color: var(--primary);"><i class="fas fa-calculator me-2"></i>Loan Calculator</h6>
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Loan Amount (₦)</label>
+                                    <input type="number" class="form-control" id="calcAmount" placeholder="100000" max="1350000" onchange="calculateLoan()">
+                                    <small class="text-muted">Max: ₦1,350,000</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Duration (months)</label>
+                                    <select class="form-select" id="calcDuration" onchange="calculateLoan()">
+                                        <option value="3">3 months</option>
+                                        <option value="6">6 months</option>
+                                        <option value="12" selected>12 months</option>
+                                        <option value="18">18 months</option>
+                                        <option value="24">24 months</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Interest Rate (%)</label>
+                                    <input type="number" class="form-control" id="calcRate" readonly value="5" step="0.1">
+                                    <small class="text-success"><i class="fas fa-star me-1"></i>Club Member Rate</small>
+                                </div>
+                            </form>
+                            <div class="alert-info-custom" id="calcResult" style="display:none;">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="fw-semibold">Monthly Payment:</small>
+                                    <strong id="monthlyPay">₦0</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="fw-semibold">Total Interest:</small>
+                                    <strong id="totalInt">₦0</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <small class="fw-semibold">Total Repayment:</small>
+                                    <strong id="totalRep">₦0</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="mb-3 fw-bold" style="color: var(--primary);"><i class="fas fa-shield-alt me-2"></i>Important Notes</h6>
+                            <div class="loan-rules-list">
+                                <ul class="small mb-0 ps-3">
+                                    <li class="mb-2">3-day reminder before payment due</li>
+                                    <li class="mb-2">Request rollover before expiration</li>
+                                    <li class="mb-2">Rollover increases rate by 1%</li>
+                                    <li class="mb-0">Two guarantors required for approval</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Section -->
+        <div id="roi" class="content-section" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-chart-line me-2"></i>ROI Calculator & Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert-info-custom mb-4">
+                        <h6 class="fw-bold mb-3">How ROI is Calculated</h6>
+                        <p class="mb-2">Monthly ROI = (Your Cumulative Savings from First Month to Current) / (Total Savings by All Members up to Current Month) × Interest for the Month × 90%</p>
+                        <p class="mb-0 small"><strong>Note:</strong> 10% of the monthly interest pool is retained as operating charges</p>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-3">
+                            <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                <small class="text-muted d-block mb-2">Your Cumulative Savings</small>
+                                <h3 class="mb-0 fw-bold" style="color: var(--primary);">₦450,000</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);">
+                                <small class="text-muted d-block mb-2">Total Member Savings</small>
+                                <h3 class="mb-0 fw-bold" style="color: var(--primary);">₦3,600,000</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                <small class="text-muted d-block mb-2">Your Share</small>
+                                <h3 class="mb-0 fw-bold text-warning">12.5%</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                <small class="text-muted d-block mb-2">This Month's ROI</small>
+                                <h3 class="mb-0 fw-bold text-success">₦3,750</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">Monthly Breakdown</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Interest Pool</th>
+                                            <th>Your ROI (90%)</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Oct 2025</td>
+                                            <td>₦30,000</td>
+                                            <td class="text-success fw-bold">₦3,750</td>
+                                            <td><span class="badge bg-success-subtle text-success">Credited</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sep 2025</td>
+                                            <td>₦28,500</td>
+                                            <td class="text-success fw-bold">₦3,563</td>
+                                            <td><span class="badge bg-success-subtle text-success">Credited</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Aug 2025</td>
+                                            <td>₦27,000</td>
+                                            <td class="text-success fw-bold">₦3,375</td>
+                                            <td><span class="badge bg-success-subtle text-success">Credited</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">Interest Sources</h6>
+                            <div class="loan-rules-list">
+                                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                                    <div>
+                                        <small class="text-muted d-block">Total Loan Interest</small>
+                                        <h5 class="mb-0 fw-bold" style="color: var(--primary);">₦30,000</h5>
+                                    </div>
+                                    <div class="text-end">
+                                        <small class="text-muted d-block">From All Members</small>
+                                        <small class="fw-semibold">Current Month</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <small>Distributed to Members (90%)</small>
+                                        <strong>₦27,000</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small>Operating Charges (10%)</small>
+                                        <strong>₦3,000</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert-warning-custom mt-3">
+                                <small><i class="fas fa-info-circle me-2"></i><strong>Note:</strong> ROI is calculated and credited on the 1st of each month</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Section -->
+        <div id="referral" class="content-section" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-users me-2"></i>Referral Program</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="gradient-bg text-white p-4 rounded-3">
+                                <h5 class="fw-bold mb-3"><i class="fas fa-gift me-2"></i>Refer & Earn!</h5>
+                                <p class="mb-4">Invite friends to join Club De Stars and earn rewards for each successful referral</p>
+                                <div class="bg-white bg-opacity-20 p-3 rounded-3 mb-3">
+                                    <small class="opacity-75 d-block mb-1">Your Referral Code</small>
+                                    <h4 class="mb-0 fw-bold">CDS001-REF</h4>
+                                </div>
+                                <button class="btn btn-light w-100 fw-semibold">
+                                    <i class="fas fa-copy me-2"></i>Copy Referral Link
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">Your Referrals</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                        <h3 class="mb-0 fw-bold text-success">5</h3>
+                                        <small class="text-muted">Total Referrals</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                        <h3 class="mb-0 fw-bold text-warning">₦25,000</h3>
+                                        <small class="text-muted">Earned</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert-info-custom">
+                                <h6 class="fw-bold mb-2">Referral Benefits</h6>
+                                <ul class="small mb-0 ps-3">
+                                    <li class="mb-2">Earn ₦5,000 per successful referral</li>
+                                    <li class="mb-2">Referee gets ₦2,500 signup bonus</li>
+                                    <li class="mb-0">Bonus credited after first deposit</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Powered By Footer -->
+    <div class="powered-by">
+        Powered by <strong style="color: var(--primary);">JESZ LTD</strong>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Loan Request Modal -->
+    <div class="modal fade" id="loanRequestModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-file-invoice-dollar me-2" style="color: var(--primary);"></i>Apply for Loan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert-info-custom mb-3">
+                        <small><strong>Maximum Eligible:</strong> ₦1,350,000 (3x your savings of ₦450,000)</small>
+                    </div>
+                    <div class="alert-warning-custom mb-4">
+                        <small><i class="fas fa-exclamation-triangle me-2"></i><strong>Requirements:</strong> Must have saved for at least 1 month. Two guarantors required.</small>
+                    </div>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Loan Amount (₦)</label>
+                                <input type="number" class="form-control" id="loanAmount" max="1350000" placeholder="Enter amount" required>
+                                <small class="text-muted">Max: ₦1,350,000</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Repayment Period</label>
+                                <select class="form-select" id="loanDuration" required>
+                                    <option value="3">3 months</option>
+                                    <option value="6">6 months</option>
+                                    <option value="12" selected>12 months</option>
+                                    <option value="18">18 months</option>
+                                    <option value="24">24 months</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Purpose of Loan</label>
+                            <textarea class="form-control" rows="2" placeholder="Briefly describe why you need this loan" required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Guarantor 1 Name</label>
+                                <input type="text" class="form-control" placeholder="Full name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Guarantor 1 Phone</label>
+                                <input type="tel" class="form-control" placeholder="+234 xxx xxx xxxx" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Guarantor 2 Name</label>
+                                <input type="text" class="form-control" placeholder="Full name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Guarantor 2 Phone</label>
+                                <input type="tel" class="form-control" placeholder="+234 xxx xxx xxxx" required>
+                            </div>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                I agree to the loan terms: 5% interest rate, 0.5% daily penalty for late payment, and rollover conditions
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitLoanRequest()">Submit Application</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal Modal -->
+    <div class="modal fade" id="withdrawModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-minus-circle me-2 text-danger"></i>Request Withdrawal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert-warning-custom mb-3">
+                        <small><i class="fas fa-calendar-alt me-2"></i><strong>Withdrawal Window:</strong> December 1st - 10th</small>
+                    </div>
+                    <div class="alert-info-custom mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <small>Available Balance:</small>
+                            <strong>₦450,000</strong>
+                        </div>
+                        <small><strong>Force Withdrawal:</strong> Available anytime with 2.5% charge (50% now, 50% after 30 days)</small>
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Withdrawal Type</label>
+                            <select class="form-select" id="withdrawalType" required onchange="updateWithdrawalFee()">
+                                <option value="">Choose withdrawal type...</option>
+                                <option value="regular">Regular Withdrawal (Dec 1-10 only)</option>
+                                <option value="force">Force Withdrawal (2.5% charge)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Amount (₦)</label>
+                            <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount" max="450000" required onchange="updateWithdrawalFee()">
+                        </div>
+                        <div class="mb-3" id="withdrawalFeeInfo" style="display: none;">
+                            <div class="alert-warning-custom">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Withdrawal Amount:</small>
+                                    <strong id="withdrawAmountDisplay">₦0</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Initial Charge (1.25%):</small>
+                                    <strong id="initialFee">₦0</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>30-Day Charge (1.25%):</small>
+                                    <strong id="secondFee">₦0</strong>
+                                </div>
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between">
+                                    <small class="fw-bold">You'll Receive (50%):</small>
+                                    <strong id="netAmount">₦0</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Withdrawal Method</label>
+                            <select class="form-select" required>
+                                <option value="">Choose method...</option>
+                                <option>Bank Transfer</option>
+                                <option>Cash Pickup</option>
+                                <option>Mobile Money</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Reason for Withdrawal</label>
+                            <textarea class="form-control" rows="2" placeholder="Brief reason" required></textarea>
+                        </div>
+                        <div class="alert-info-custom">
+                            <small><i class="fas fa-clock me-2"></i>Processing time: 24-48 hours for regular withdrawals</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="submitWithdrawal()">Submit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle me-2 text-success"></i>Make Deposit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Amount (₦)</label>
+                            <input type="number" class="form-control" placeholder="Enter amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Payment Method</label>
+                            <select class="form-select" required>
+                                <option value="">Choose payment method...</option>
+                                <option>Bank Transfer</option>
+                                <option>Debit Card</option>
+                                <option>Cash Deposit</option>
+                                <option>Mobile Money</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Reference Number (Optional)</label>
+                            <input type="text" class="form-control" placeholder="Transaction reference">
+                        </div>
+                        <div class="alert-info-custom">
+                            <small><i class="fas fa-info-circle me-2"></i>Your current savings balance: ₦450,000</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="submitDeposit()">Submit Deposit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-credit-card me-2" style="color: var(--primary);"></i>Make Loan Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted fw-semibold">Outstanding Balance</span>
+                                    <strong>₦200,000</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted fw-semibold">Next Payment Due</span>
+                                    <strong class="text-danger">₦8,750</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Payment Amount (₦)</label>
+                            <input type="number" class="form-control" value="8750" min="8750" max="200000" required>
+                            <small class="text-muted">Minimum payment: ₦8,750</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Payment Method</label>
+                            <select class="form-select" required>
+                                <option value="">Choose payment method...</option>
+                                <option>Bank Transfer</option>
+                                <option>Debit Card</option>
+                                <option>Deduct from Savings</option>
+                                <option>Cash Payment</option>
+                            </select>
+                        </div>
+
+                        <div class="alert-warning-custom">
+                            <small><i class="fas fa-exclamation-triangle me-2"></i><strong>Due in 3 days!</strong> Avoid 0.5% daily penalty</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitPayment()">Make Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rollover Modal -->
+    <div class="modal fade" id="rolloverModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header" style="border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-sync-alt me-2" style="color: var(--primary);"></i>Request Loan Rollover</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert-info-custom mb-3">
+                        <h6 class="fw-bold mb-2">Rollover Requirements</h6>
+                        <ul class="small mb-0 ps-3">
+                            <li class="mb-2">Pay current month's interest before expiration</li>
+                            <li class="mb-2">Interest rate increases by 1% (from 5% to 6%)</li>
+                            <li class="mb-0">Request must be approved before due date</li>
+                        </ul>
+                    </div>
+                    <form>
+                        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted fw-semibold">Current Outstanding</span>
+                                    <strong>₦200,000</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted fw-semibold">Interest to Pay</span>
+                                    <strong>₦8,750</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted fw-semibold">New Interest Rate</span>
+                                    <strong class="text-warning">6% p.a.</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Extended Duration (months)</label>
+                            <select class="form-select" required>
+                                <option value="">Choose duration...</option>
+                                <option value="3">3 months</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Reason for Rollover</label>
+                            <textarea class="form-control" rows="2" placeholder="Brief reason" required></textarea>
+                        </div>
+
+                        <div class="alert-warning-custom">
+                            <small><i class="fas fa-info-circle me-2"></i>Interest payment of ₦8,750 will be processed immediately upon approval</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning" onclick="submitRollover()">Submit Rollover Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Savings Section -->
+        <div id="savings" class="content-section" style="display:none;">
+            <div class="row g-4">
+                <!-- Left Column - Savings Overview -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-piggy-bank me-2"></i>Savings Overview</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                        <small class="text-muted d-block mb-2 fw-semibold">Total Savings</small>
+                                        <h3 class="mb-0 fw-bold text-success">₦450,000</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                        <small class="text-muted d-block mb-2 fw-semibold">ROI Earned</small>
+                                        <h3 class="mb-0 fw-bold" style="color: var(--primary);">₦37,500</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="p-4 rounded-3 text-center" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                        <small class="text-muted d-block mb-2 fw-semibold">This Month</small>
+                                        <h3 class="mb-0 fw-bold text-warning">₦50,000</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Savings Chart Placeholder -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold mb-3" style="color: var(--primary);">Savings Growth (2025)</h6>
+                                <div class="p-4 rounded-3" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%); border: 2px solid rgba(30, 58, 138, 0.1);">
+                                    <div class="row g-3 text-center">
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 80px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Jan</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 90px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Feb</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 100px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Mar</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 95px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Apr</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 105px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">May</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 110px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Jun</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 115px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Jul</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 120px; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Aug</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 125px; background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Sep</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <div style="height: 130px; background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-radius: 8px 8px 0 0; width: 100%;"></div>
+                                            </div>
+                                            <small class="text-muted fw-semibold">Oct</small>
+                                            <div class="small fw-bold">₦50k</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monthly Savings History -->
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);">Monthly Savings History</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);">
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Amount Saved</th>
+                                            <th>ROI Credit</th>
+                                            <th>Cumulative</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-semibold">October 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦3,750</td>
+                                            <td class="fw-bold">₦450,000</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">September 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦3,563</td>
+                                            <td class="fw-bold">₦396,250</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">August 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦3,375</td>
+                                            <td class="fw-bold">₦342,687</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">July 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦3,188</td>
+                                            <td class="fw-bold">₦289,312</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">June 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦3,000</td>
+                                            <td class="fw-bold">₦236,124</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-semibold">May 2025</td>
+                                            <td class="text-success fw-bold">₦50,000</td>
+                                            <td class="text-info fw-bold">₦2,813</td>
+                                            <td class="fw-bold">₦183,124</td>
+                                            <td><span class="badge bg-success-subtle text-success">Completed</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Goals & Actions -->
+                <div class="col-lg-4">
+                    <!-- Savings Goal -->
+                    <div class="savings-goal-card mb-4">
+                        <h5 class="mb-3 fw-bold"><i class="fas fa-target me-2"></i>Savings Goal 2025</h5>
+                        <div class="text-center mb-4">
+                            <h2 class="mb-0 fw-bold">₦600,000</h2>
+                            <small class="opacity-90">Target Amount</small>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-semibold">Current: ₦450,000</span>
+                            <span class="fw-bold">75%</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 14px; background: rgba(255,255,255,0.3);">
+                            <div class="progress-bar" style="width: 75%; background: white;"></div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="bg-white bg-opacity-20 p-3 rounded-3 text-center">
+                                    <small class="opacity-90 d-block">Remaining</small>
+                                    <strong>₦150,000</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-white bg-opacity-20 p-3 rounded-3 text-center">
+                                    <small class="opacity-90 d-block">Months Left</small>
+                                    <strong>2 months</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0 opacity-90"><i class="fas fa-calendar me-2"></i>Target: December 2025</p>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3" style="color: var(--primary);"><i class="fas fa-bolt me-2"></i>Quick Actions</h6>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" onclick="openModal('depositModal')">
+                                    <i class="fas fa-plus-circle me-2"></i>Make Deposit
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="openModal('withdrawModal')">
+                                    <i class="fas fa-minus-circle me-2"></i>Request Withdrawal
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="openModal('goalModal')">
+                                    <i class="fas fa-target me-2"></i>Update Goal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Savings Info -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h6 class="mb-3 fw-bold" style="color: var(--primary);"><i class="fas fa-info-circle me-2"></i>Savings Benefits</h6>
+                            <div class="loan-rules-list">
+                                <ul class="small mb-0 ps-3">
+                                    <li class="mb-2"><strong>10% Annual ROI</strong> distributed monthly</li>
+                                    <li class="mb-2"><strong>Loan Eligibility:</strong> Up to 3x your savings</li>
+                                    <li class="mb-2"><strong>Club Members:</strong> 5% loan interest rate</li>
+                                    <li class="mb-2"><strong>Withdrawal Window:</strong> Dec 1-10 annually</li>
+                                    <li class="mb-0"><strong>Force Withdrawal:</strong> Available with 2.5% charge</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Savings Stats -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="mb-3 fw-bold" style="color: var(--primary);"><i class="fas fa-chart-bar me-2"></i>Your Statistics</h6>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted">Average Monthly Deposit</small>
+                                    <strong>₦50,000</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted">Total Months Saved</small>
+                                    <strong>10 months</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted">Total ROI Earned</small>
+                                    <strong class="text-success">₦37,500</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted">Effective Rate</small>
+                                    <strong class="text-info">10.83%</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">Share of Total Pool</small>
+                                    <strong>12.5%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports" class="content-section" style="display:none;">
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-file-alt me-2"></i>Generate Reports</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="p-4 rounded-3 text-center card-hover" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%); border: 2px solid rgba(30, 58, 138, 0.1); cursor: pointer;" onclick="generateReport('savings')">
+                                        <div class="mb-3">
+                                            <i class="fas fa-piggy-bank" style="font-size: 2.5rem; color: var(--primary);"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-1">Savings Report</h6>
+                                        <small class="text-muted">Monthly savings history</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-4 rounded-3 text-center card-hover" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(217, 119, 6, 0.05) 100%); border: 2px solid rgba(245, 158, 11, 0.2); cursor: pointer;" onclick="generateReport('loans')">
+                                        <div class="mb-3">
+                                            <i class="fas fa-hand-holding-usd" style="font-size: 2.5rem; color: #f59e0b;"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-1">Loan Report</h6>
+                                        <small class="text-muted">Loan history & payments</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-4 rounded-3 text-center card-hover" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(8, 145, 178, 0.05) 100%); border: 2px solid rgba(6, 182, 212, 0.2); cursor: pointer;" onclick="generateReport('roi')">
+                                        <div class="mb-3">
+                                            <i class="fas fa-chart-line" style="font-size: 2.5rem; color: #06b6d4;"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-1">ROI Report</h6>
+                                        <small class="text-muted">Interest earned details</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-4 rounded-3 text-center card-hover" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%); border: 2px solid rgba(16, 185, 129, 0.2); cursor: pointer;" onclick="generateReport('transactions')">
+                                        <div class="mb-3">
+                                            <i class="fas fa-exchange-alt" style="font-size: 2.5rem; color: #10b981;"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-1">Transaction Report</h6>
+                                        <small class="text-muted">All transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Preview/Results -->
+                <div class="col-lg-12">
+                    <div class="card" id="reportPreview" style="display: none;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary);"><i class="fas fa-file-pdf me-2"></i><span id="reportTitle">Report Preview</span></h5>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-primary" onclick="downloadReport('pdf')">
+                                    <i class="fas fa-file-pdf me-2"></i>Download PDF
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="downloadReport('excel')">
+                                    <i class="fas fa-file-excel me-2"></i>Export Excel
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="printReport()">
+                                    <i class="fas fa-print me-2"></i>Print
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Report Header -->
+                            <div class="text-center mb-4 pb-4 border-bottom" id="reportHeader">
+                                <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                                    <div class="logo-box" style="width: 50px; height: 50px;">J</div>
+                                    <div class="text-start">
+                                        <h4 class="mb-0 fw-bold" style="color: var(--primary);">JESZ LTD</h4>
+                                        <small class="text-muted">Club De Stars Multipurpose Cooperative Society</small>
+                                    </div>
+                                </div>
+                                <h5 class="fw-bold mb-2" id="reportTypeTitle">Savings Report</h5>
+                                <div class="small text-muted">
+                                    <div>Member: John Doe (CDS-001)</div>
+                                    <div>Report Date: November 01, 2025</div>
+                                    <div>Period: January 2025 - October 2025</div>
+                                </div>
+                            </div>
+
+                            <!-- Report Content -->
+                            <div id="reportContent">
+                                <!-- Content will be dynamically loaded here -->
+                            </div>
+
+                            <!-- Report Footer -->
+                            <div class="mt-4 pt-4 border-top text-center">
+                                <small class="text-muted">This is a computer-generated report | Powered by JESZ LTD</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navigation
+        function showSection(sectionId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+
+            if (window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        }
+
+        // Loan Calculator
+        function calculateLoan() {
+            const amount = parseFloat(document.getElementById('calcAmount').value) || 0;
+            const duration = parseInt(document.getElementById('calcDuration').value) || 12;
+            const rate = parseFloat(document.getElementById('calcRate').value) || 5;
+            
+            if (amount > 0) {
+                if (amount > 1350000) {
+                    alert('Loan amount exceeds maximum eligible amount of ₦1,350,000 (3x your savings)');
+                    document.getElementById('calcAmount').value = 1350000;
+                    return;
+                }
+                
+                const interest = (amount * rate * duration) / (100 * 12);
+                const total = amount + interest;
+                const monthly = total / duration;
+                
+                document.getElementById('calcResult').style.display = 'block';
+                document.getElementById('monthlyPay').textContent = '₦' + monthly.toLocaleString('en-NG', {maximumFractionDigits: 2});
+                document.getElementById('totalInt').textContent = '₦' + interest.toLocaleString('en-NG', {maximumFractionDigits: 2});
+                document.getElementById('totalRep').textContent = '₦' + total.toLocaleString('en-NG', {maximumFractionDigits: 2});
+            }
+        }
+
+        // Withdrawal Fee Calculator
+        function updateWithdrawalFee() {
+            const type = document.getElementById('withdrawalType').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+            const feeInfo = document.getElementById('withdrawalFeeInfo');
+            
+            if (type === 'force' && amount > 0) {
+                const totalCharge = amount * 0.025;
+                const initialFee = totalCharge / 2;
+                const secondFee = totalCharge / 2;
+                const firstBatch = (amount / 2) - initialFee;
+                
+                document.getElementById('withdrawAmountDisplay').textContent = '₦' + amount.toLocaleString('en-NG');
+                document.getElementById('initialFee').textContent = '₦' + initialFee.toLocaleString('en-NG', {maximumFractionDigits: 2});
+                document.getElementById('secondFee').textContent = '₦' + secondFee.toLocaleString('en-NG', {maximumFractionDigits: 2});
+                document.getElementById('netAmount').textContent = '₦' + firstBatch.toLocaleString('en-NG', {maximumFractionDigits: 2});
+                feeInfo.style.display = 'block';
+            } else {
+                feeInfo.style.display = 'none';
+            }
+        }
+
+        // Form Submissions
+        function submitDeposit() {
+            alert('✅ Deposit request submitted successfully! You will receive a confirmation shortly.');
+            bootstrap.Modal.getInstance(document.getElementById('depositModal')).hide();
+        }
+
+        function submitWithdrawal() {
+            const type = document.getElementById('withdrawalType').value;
+            if (type === 'force') {
+                if (confirm('Force withdrawal includes a 2.5% charge. You will receive 50% now and 50% after 30 days. Continue?')) {
+                    alert('✅ Force withdrawal request submitted! Processing time: 24-48 hours.');
+                    bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
+                }
+            } else {
+                alert('✅ Withdrawal request submitted successfully! Processing time: 24-48 hours.');
+                bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
+            }
+        }
+
+        function submitPayment() {
+            alert('✅ Payment processed successfully! Your loan balance has been updated.');
+            bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+        }
+
+        function submitLoanRequest() {
+            const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            
+            if (amount <= 0) {
+                alert('❌ Please enter a valid loan amount');
+                return;
+            }
+            
+            if (amount > 1350000) {
+                alert('❌ Loan amount exceeds maximum eligible amount of ₦1,350,000 (3x your savings)');
+                return;
+            }
+            
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('❌ Please agree to the loan terms and conditions');
+                return;
+            }
+            
+            alert('✅ Loan application submitted successfully!\n\nYour application will be reviewed within 3-5 business days.\n\nClub Member Rate: 5% p.a.\nMaximum Amount: 3x savings\nReminder: 3 days before due date');
+            bootstrap.Modal.getInstance(document.getElementById('loanRequestModal')).hide();
+        }
+
+        function submitRollover() {
+            if (confirm('This will pay ₦8,750 interest and extend your loan with 6% interest rate. Continue?')) {
+                alert('✅ Rollover request submitted!\n\nInterest payment of ₦8,750 will be processed.\nNew interest rate: 6% p.a.\nYou will be notified once approved.');
+                bootstrap.Modal.getInstance(document.getElementById('rolloverModal')).hide();
+            }
+        }
+
+        // Print Function
+        window.onbeforeprint = function() {
+            document.getElementById('sidebar').style.display = 'none';
+            document.querySelector('.top-navbar').style.display = 'none';
+        };
+
+        window.onafterprint = function() {
+            document.getElementById('sidebar').style.display = 'block';
+            document.querySelector('.top-navbar').style.display = 'flex';
+        };
+
+        // Animation on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.stat-card, .card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
