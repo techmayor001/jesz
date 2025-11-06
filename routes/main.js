@@ -9,6 +9,15 @@ const router = express.Router();
 router.get('/', (req,res)=>{
     res.render("index")
 })
+
+router.get('/gallery', (req,res)=>{
+    res.render("gallery")
+})
+
+router.get('/about-us', (req,res)=>{
+    res.render("about")
+})
+
 router.get('/onboard/club-de-star-cooperative', (req,res)=>{
     res.render("auth")
 })
